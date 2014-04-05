@@ -28,12 +28,14 @@ public class MainActivity extends Activity {
 	public double longitude;
 	private Marker mMarker;
 	private GoogleMap map;
+	Tools mytool;
+	private static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		context = getApplicationContext();
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
@@ -42,8 +44,8 @@ public class MainActivity extends Activity {
 
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
 				.title("Marker"));
-
-		startLocation();
+		mytool = new Tools(latitude, latitude, mMarker, map);
+		mytool.startLocation(context);
 
 		Button saveButton = (Button) findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new OnClickListener() {
@@ -57,75 +59,5 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void startLocation() {
-		// Acquire a reference to the system Location Manager
-		locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
-
-		// Define a listener that responds to location updates
-		LocationListener locationListener = new LocationListener() {
-			public void onLocationChanged(Location location) {
-
-				/* Retrieve current position */
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
-
-				addLocation(location);
-			}
-
-			@Override
-			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-				// TODO Auto-generated method stub
-
-			}
-
-		};
-
-		locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
-				locationListener, null);
-		locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,
-				locationListener, null);
-
-		map.setOnCameraChangeListener(new OnCameraChangeListener() {
-			public void onCameraChange(CameraPosition arg0) {
-				map.clear();
-				mMarker = map.addMarker(new MarkerOptions().position(
-						arg0.target).icon(
-						BitmapDescriptorFactory.fromResource(R.drawable.empty)));
-
-				/*
-				 * Testing cameraListener Context context =
-				 * getApplicationContext(); CharSequence text =
-				 * arg0.target.toString(); int duration = Toast.LENGTH_SHORT;
-				 * 
-				 * Toast toast = Toast.makeText(context, text, duration);
-				 * toast.show();
-				 */
-
-			}
-		});
-
-	}
-
-	public void addLocation(Location location) {
-
-		LatLng position = new LatLng(location.getLatitude(),
-				location.getLongitude());
-
-		map.animateCamera(CameraUpdateFactory.newLatLng(position));
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
-	}
+	
 }

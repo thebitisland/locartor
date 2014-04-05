@@ -53,10 +53,6 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.thebitisland.locartor.CameraActivity"
-            android:label="@string/title_activity_settings2" >
-        </activity>
     </application>
 
 </manifest>
