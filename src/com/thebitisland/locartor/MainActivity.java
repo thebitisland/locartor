@@ -34,6 +34,8 @@ public class MainActivity extends Activity {
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
+		
+		map.setMyLocationEnabled(true);
 
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
 				.title("Marker"));
@@ -90,6 +92,7 @@ public class MainActivity extends Activity {
 		LatLng position = new LatLng(location.getLatitude(),
 				location.getLongitude());
 		//mMarker.setPosition(position);
+		
 		map.animateCamera(CameraUpdateFactory.newLatLng(position));
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
 	}
