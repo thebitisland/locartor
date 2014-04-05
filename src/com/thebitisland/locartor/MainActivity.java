@@ -15,7 +15,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
@@ -41,6 +44,16 @@ public class MainActivity extends Activity {
 				.title("Marker"));
 
 		startLocation();
+
+		Button saveButton = (Button) findViewById(R.id.saveButton);
+		saveButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				Intent i = new Intent(getBaseContext(), SaveLocationActivity.class);
+				startActivity(i);
+				// finish();
+			}
+		});
 
 	}
 
@@ -115,5 +128,4 @@ public class MainActivity extends Activity {
 		map.animateCamera(CameraUpdateFactory.newLatLng(position));
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
 	}
-
 }
