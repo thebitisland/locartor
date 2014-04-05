@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
+    
 
     <application
         android:allowBackup="true"
@@ -24,13 +25,19 @@
         </activity>
         
           <activity
-            android:name="com.example.prueba.SecondView"
+            android:name="com.thebitisland.locartor.SecondView"
             android:label="@string/title_activity_settings" >
+        </activity>
+        
+            <activity
+            android:name="com.thebitisland.locartor.CameraActivity"
+            android:label="@string/title_activity_settings2" >
         </activity>
  
     </application>
     
       <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
    
 
 </manifest>

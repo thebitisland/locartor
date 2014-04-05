@@ -30,8 +30,8 @@ public class SecondView extends Activity {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.secondview);
 	 
-	        Button stopAlarm = (Button) findViewById(R.id.alarmbut);
-	        stopAlarm.setOnClickListener(new OnClickListener() {
+	        Button Alarm = (Button) findViewById(R.id.alarmbut);
+	        Alarm.setOnClickListener(new OnClickListener() {
 		        public void onClick(View v) {
 		        	cal = new GregorianCalendar();
 	            	 cal.setTimeInMillis(System.currentTimeMillis());
@@ -47,8 +47,20 @@ public class SecondView extends Activity {
 	               //finish();
 		        }
 		    });  
+	        
+	        
+	        Button Cam = (Button) findViewById(R.id.cambut);
+	        Cam.setOnClickListener(new OnClickListener() {
+		        public void onClick(View v) {
+		        	
+	            	    
+	                Intent i = new Intent(getBaseContext(),CameraActivity.class);      
+	                startActivity(i);
+	               //finish();
+		        }
+		    });
 	       
-	       
+	      
 	    }
 	 
 	  
