@@ -50,7 +50,8 @@
 
         <activity
             android:name="com.thebitisland.locartor.SaveLocationActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.thebitisland.locartor.CameraActivity"
