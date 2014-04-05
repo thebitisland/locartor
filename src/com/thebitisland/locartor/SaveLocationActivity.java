@@ -7,9 +7,14 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.Marker;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.AlarmClock;
@@ -23,11 +28,24 @@ public class SaveLocationActivity extends Activity {
 	Calendar cal;
 	int minute, hour, day;
 	ImageView imgFavorite;
+	
+	private LocationManager locationManager;
+
+	public double latitude;
+	public double longitude;
+	private Marker mMarker;
+	private GoogleMap map;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.secondview);
+		
+		// Get a handle to the Map Fragment
+				map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+						.getMap();
+
+				map.setMyLocationEnabled(true);
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
 		Alarm.setOnClickListener(new OnClickListener() {
