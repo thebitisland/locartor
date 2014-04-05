@@ -60,15 +60,25 @@ public class MainActivity extends Activity {
 				addLocation(location);
 			}
 
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
+				// TODO Auto-generated method stub
+
 			}
 
-			public void onProviderEnabled(String provider) {
-			}
-
-			public void onProviderDisabled(String provider) {
-			}
 		};
 
 		locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
@@ -101,7 +111,6 @@ public class MainActivity extends Activity {
 
 		LatLng position = new LatLng(location.getLatitude(),
 				location.getLongitude());
-		// mMarker.setPosition(position);
 
 		map.animateCamera(CameraUpdateFactory.newLatLng(position));
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
