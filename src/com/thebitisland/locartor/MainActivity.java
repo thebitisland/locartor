@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -23,7 +24,6 @@ public class MainActivity extends Activity {
 	public double latitude;
 	public double longitude;
 	private Marker mMarker;
-	private Marker mMarkerManual;
 	private GoogleMap map;
 
 	@Override
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
-		
+
 		map.setMyLocationEnabled(true);
 
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
@@ -82,17 +82,27 @@ public class MainActivity extends Activity {
 				mMarker = map.addMarker(new MarkerOptions().position(
 						arg0.target).icon(
 						BitmapDescriptorFactory.fromResource(R.drawable.empty)));
+
+				/*
+				 * Testing cameraListener Context context =
+				 * getApplicationContext(); CharSequence text =
+				 * arg0.target.toString(); int duration = Toast.LENGTH_SHORT;
+				 * 
+				 * Toast toast = Toast.makeText(context, text, duration);
+				 * toast.show();
+				 */
+
 			}
 		});
-		
+
 	}
 
 	public void addLocation(Location location) {
 
 		LatLng position = new LatLng(location.getLatitude(),
 				location.getLongitude());
-		//mMarker.setPosition(position);
-		
+		// mMarker.setPosition(position);
+
 		map.animateCamera(CameraUpdateFactory.newLatLng(position));
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
 	}
