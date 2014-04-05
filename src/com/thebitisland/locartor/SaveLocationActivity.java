@@ -9,7 +9,9 @@ import java.util.GregorianCalendar;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -46,6 +48,9 @@ public class SaveLocationActivity extends Activity {
 						.getMap();
 
 				map.setMyLocationEnabled(true);
+				
+				mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
+						.title("Marker"));
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
 		Alarm.setOnClickListener(new OnClickListener() {

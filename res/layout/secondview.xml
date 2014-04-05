@@ -9,65 +9,39 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_weight="0.5" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_weight="0.8"
-        android:orientation="vertical" >
-
+        android:layout_height="150dp" />
 
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="0.9"
+                android:layout_height="180dp"
                 android:contentDescription="@string/hello_world"
-                android:src="@drawable/camera_icon" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/cambut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="Notas" />
+                android:scaleType="centerCrop"
+                
+                android:background="@drawable/camera_icon" />
 
             <Button
                 android:id="@+id/alarmbut"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_height="80dp"
                 android:text="Alarm" />
-        </LinearLayout>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Add some notes"
+                android:ems="10" >
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Share" />
-
+                <requestFocus />
+            </EditText>
+ 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center" 
             android:text="Save" />
-    </RelativeLayout>
+  
 
 </LinearLayout>
