@@ -9,14 +9,12 @@ import java.util.GregorianCalendar;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,34 +29,29 @@ public class SaveLocationActivity extends Activity {
 	Calendar cal;
 	int minute, hour, day;
 	ImageView imgFavorite;
-
+	
 	private LocationManager locationManager;
 
 	public double latitude;
 	public double longitude;
 	private Marker mMarker;
 	private GoogleMap map;
-	Tools mytool;
-	private static Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.secondview);
-		context = getApplicationContext();
+		
 		// Get a handle to the Map Fragment
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-				.getMap();
+				map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+						.getMap();
 
-		map.setMyLocationEnabled(true);
-
-		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
-				.title("Marker"));
-
-		mytool = new Tools(latitude, latitude, mMarker, map);
-		mytool.startLocation(context);
+				map.setMyLocationEnabled(true);
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
+		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+		Alarm.setTypeface(robotoLight);
+		
 		Alarm.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				cal = new GregorianCalendar();
@@ -85,7 +78,7 @@ public class SaveLocationActivity extends Activity {
 		});
 
 	}
-
+	
 	public void open() {
 		Intent intent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -96,27 +89,25 @@ public class SaveLocationActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK) {
-			Bitmap bp = (Bitmap) data.getExtras().get("data");
-			imgFavorite.setImageBitmap(bp);
-
-			File outFile = new File(Environment.getExternalStorageDirectory(),
-					"locartor.png");
-			FileOutputStream fos;
-			try {
-				fos = new FileOutputStream(outFile);
-				bp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-				fos.flush();
-				fos.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		Bitmap bp = (Bitmap) data.getExtras().get("data");
+		imgFavorite.setImageBitmap(bp);
+		
+		File outFile = new File(Environment.getExternalStorageDirectory(), "locartor.png");
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(outFile);
+			bp.compress(Bitmap.CompressFormat.PNG, 100, fos); 
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
+
 
 }
