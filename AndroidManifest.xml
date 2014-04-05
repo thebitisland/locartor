@@ -22,6 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+          <activity
+            android:name="com.example.prueba.SecondView"
+            android:label="@string/title_activity_settings" >
+        </activity>
+ 
     </application>
+    
+      <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+   
 
 </manifest>
