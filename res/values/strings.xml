@@ -4,5 +4,6 @@
     <string name="app_name">Locartor</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">It works!</string>
+    <string name="tap">Tap the image to open the camera!!</string>
 
 </resources>
