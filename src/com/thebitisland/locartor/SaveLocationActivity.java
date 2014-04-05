@@ -12,6 +12,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Marker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -36,17 +37,23 @@ public class SaveLocationActivity extends Activity {
 	public double longitude;
 	private Marker mMarker;
 	private GoogleMap map;
+	Tools mytool;
+	private static Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.secondview);
+		context = getApplicationContext();
 		
 		// Get a handle to the Map Fragment
 				map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 						.getMap();
 
 				map.setMyLocationEnabled(true);
+				
+				mytool = new Tools(latitude, latitude, mMarker, map);
+				mytool.startLocation(context);
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
