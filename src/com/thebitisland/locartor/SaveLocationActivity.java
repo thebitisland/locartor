@@ -11,7 +11,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Marker;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,11 +38,14 @@ public class SaveLocationActivity extends Activity {
 
 	Calendar cal;
 	int minute, hour, day;
-	ImageView imgFavorite;
+
 	private static final String PREF_UNIQUE_DATE = "PREF_UNIQUE_DATE";
 	private static final String PREF_UNIQUE_NOTES = "PREF_UNIQUE_NOTES";
 	private static final String PREF_UNIQUE_LATITUDE = "PREF_UNIQUE_LATITUDE";
 	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
+
+	ImageView takenImage;
+
 	public double latitude;
 	public double longitude;
 	private Marker mMarker;
@@ -65,37 +67,44 @@ public class SaveLocationActivity extends Activity {
 
 		map.setMyLocationEnabled(true);
 
+		map.getUiSettings().setZoomControlsEnabled(false);
+
 		myTool = new Tools(latitude, latitude, mMarker, map);
 		myTool.startLocation(context);
 
-		Button Alarm = (Button) findViewById(R.id.alarmbut);
-		Button saveButton = (Button) findViewById(R.id.button2);
-		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+		Button Alarm = (Button) findViewById(R.id.alarmButton);
+		Button saveButton = (Button) findViewById(R.id.saveButton);
+		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
+				"fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
 		saveButton.setTypeface(robotoLight);
-		final EditText mEdit=(EditText)findViewById(R.id.notes);
-		
+		final EditText mEdit = (EditText) findViewById(R.id.addNotes);
+
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-			
-				String tag_alarm="Locartor";
-				String nextAlarm = Settings.System.getString(getContentResolver(),
-					    Settings.System.NEXT_ALARM_FORMATTED);
-				String notes=mEdit.getText().toString();
-				//String nextAlarm2 = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.NEXT_ALARM_FORMATTED);
-				longitude=myTool.getLongitude();
-				latitude=myTool.getLatitude();
+
+				String tag_alarm = "Locartor";
+				String nextAlarm = Settings.System.getString(
+						getContentResolver(),
+						Settings.System.NEXT_ALARM_FORMATTED);
+				String notes = mEdit.getText().toString();
+				// String nextAlarm2 =
+				// android.provider.Settings.System.getString(getContentResolver(),
+				// android.provider.Settings.System.NEXT_ALARM_FORMATTED);
+				longitude = myTool.getLongitude();
+				latitude = myTool.getLatitude();
 				Log.i(tag_alarm, nextAlarm);
 				Editor editor = preferences.edit();
 				editor.putString(PREF_UNIQUE_DATE, nextAlarm);
 				editor.putString(PREF_UNIQUE_NOTES, notes);
-				editor.putString(PREF_UNIQUE_LATITUDE,String.valueOf(latitude));
-				editor.putString(PREF_UNIQUE_LONGITUDE, String.valueOf(longitude));
-				editor.commit();				
+				editor.putString(PREF_UNIQUE_LATITUDE, String.valueOf(latitude));
+				editor.putString(PREF_UNIQUE_LONGITUDE,
+						String.valueOf(longitude));
+				editor.commit();
 				finish();
 			}
 		});
-		
+
 		Alarm.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				cal = new GregorianCalendar();
@@ -109,15 +118,15 @@ public class SaveLocationActivity extends Activity {
 				i.putExtra(AlarmClock.EXTRA_HOUR, hour);
 				i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
 				startActivity(i);
-				//finish();
+				// finish();
 			}
 		});
 
-		imgFavorite = (ImageView) findViewById(R.id.imageView1);
-		imgFavorite.setOnClickListener(new OnClickListener() {
+		takenImage = (ImageView) findViewById(R.id.takenImage);
+		takenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			
+
 				open();
 			}
 		});
@@ -134,13 +143,12 @@ public class SaveLocationActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		if (resultCode == RESULT_OK) {
 			myTool = new Tools();
 			Display display = getWindowManager().getDefaultDisplay();
-			myTool.setBitmap(data,imgFavorite,display);
-			
+			myTool.setBitmap(data, takenImage, display);
+
 		}
 	}
-
 }

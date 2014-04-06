@@ -29,7 +29,7 @@ public class RecoverLocation extends Activity {
 
 	Calendar cal;
 	int minute, hour, day;
-	ImageView imgFavorite;
+	ImageView takenImage;
 
 	public double latitude;
 	public double longitude;
@@ -44,7 +44,7 @@ public class RecoverLocation extends Activity {
 	SharedPreferences sharedPrefs;
 	Tools myTool;
 	Bitmap myBitmap;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,19 +64,19 @@ public class RecoverLocation extends Activity {
 		sharedPrefs = getSharedPreferences(PREF_UNIQUE_DATE,
 				Context.MODE_PRIVATE);
 		String val = sharedPrefs.getString(PREF_UNIQUE_DATE, null);
-		
+
 		sharedPrefs = getSharedPreferences(PREF_UNIQUE_NOTES,
 				Context.MODE_PRIVATE);
 		String val2 = sharedPrefs.getString(PREF_UNIQUE_NOTES, null);
-		
+
 		sharedPrefs = getSharedPreferences(PREF_UNIQUE_LATITUDE,
 				Context.MODE_PRIVATE);
 		String val3 = sharedPrefs.getString(PREF_UNIQUE_LATITUDE, null);
-		
+
 		sharedPrefs = getSharedPreferences(PREF_UNIQUE_LONGITUDE,
 				Context.MODE_PRIVATE);
 		String val4 = sharedPrefs.getString(PREF_UNIQUE_LONGITUDE, null);
-		
+
 		if (val != null) {
 			Log.e(tag_alarm, val);
 		} else if (val2 != null) {
@@ -88,69 +88,62 @@ public class RecoverLocation extends Activity {
 		}
 
 		open();
-		
-		
-		imgFavorite = (ImageView) findViewById(R.id.imageView1);
-		imgFavorite.setOnClickListener(new OnClickListener() {
+
+		takenImage = (ImageView) findViewById(R.id.imageView1);
+		takenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CrearAlert(context);
 			}
 		});
 
-		
-
 	}
 
 	public void open() {
 		File outFile = new File(Environment.getExternalStorageDirectory(),
 				"locartor.png");
-		if(outFile.exists()){
+		if (outFile.exists()) {
 
-		    myBitmap = BitmapFactory.decodeFile(outFile.getAbsolutePath());
-		    ImageView imgFavorite = (ImageView) findViewById(R.id.imageView1);
-		    imgFavorite.setImageBitmap(myBitmap);
-		    
+			myBitmap = BitmapFactory.decodeFile(outFile.getAbsolutePath());
+			ImageView imgFavorite = (ImageView) findViewById(R.id.imageView1);
+			imgFavorite.setImageBitmap(myBitmap);
 
 		}
 	}
 
-	
-	 public void CrearAlert(Context ctx){
-		 
-		 final Dialog dialog = new Dialog(RecoverLocation.this);
-			dialog.setContentView(R.layout.custom);
-			dialog.setTitle("");
-		    //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			// set the custom dialog components - text, image and button
-			ImageView image = (ImageView) dialog.findViewById(R.id.image);
-			image.setImageBitmap(myBitmap);
-			int hei=image.getHeight();
-			int lon=image.getWidth();
-			
-			if(hei>lon){
-				Log.e("pepe", "entro aqui");
-				Display display = getWindowManager().getDefaultDisplay();
-				int width = display.getWidth();
-				int heigth = display.getHeight();
-				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-						1800, heigth);
-				image.setLayoutParams(layoutParams);
-				
+	public void CrearAlert(Context ctx) {
+
+		final Dialog dialog = new Dialog(RecoverLocation.this);
+		dialog.setContentView(R.layout.custom);
+		dialog.setTitle("");
+		// dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// set the custom dialog components - text, image and button
+		ImageView image = (ImageView) dialog.findViewById(R.id.image);
+		image.setImageBitmap(myBitmap);
+		int hei = image.getHeight();
+		int lon = image.getWidth();
+
+		if (hei > lon) {
+			Log.e("pepe", "entro aqui");
+			Display display = getWindowManager().getDefaultDisplay();
+			int width = display.getWidth();
+			int heigth = display.getHeight();
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+					1800, heigth);
+			image.setLayoutParams(layoutParams);
+
+		}
+
+		Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		// if button is clicked, close the custom dialog
+		dialogButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
 			}
+		});
 
-			Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-			// if button is clicked, close the custom dialog
-			dialogButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialog.dismiss();
-				}
-			});
-
-			dialog.show();
-	    }
-
-
+		dialog.show();
+	}
 
 }
