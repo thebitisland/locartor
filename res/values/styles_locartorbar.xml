@@ -29,17 +29,26 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_locartorbar</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_locartorbar</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Locartorbar</item>
-        
-        
+        <item name="android:itemTextAppearance">@style/MyTheme.ActionBar.TitleTextStyle</item>       
     </style>
-
+	
+	<style name="Theme.TextAppearance" parent="@android:style/TextAppearance.Widget.TextView.PopupMenu">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
     <style name="ActionBar.Solid.Locartorbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_locartorbar</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_locartorbar</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_locartorbar</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Locartorbar</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
 
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    
     <style name="ActionBar.Transparent.Locartorbar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/ab_transparent_locartorbar</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Locartorbar</item>
@@ -47,10 +56,12 @@
 
     <style name="PopupMenu.Locartorbar" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_locartorbar</item>	
+        <item name="android:textColor">#ffffff</item>        
     </style>
 
     <style name="DropDownListView.Locartorbar" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_locartorbar</item>
+        <item name="android:textStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
 
     <style name="ActionBarTabStyle.Locartorbar" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
