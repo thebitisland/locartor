@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.AlarmClock;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,7 +43,9 @@ public class RecoverLocation extends Activity {
 	private static final String PREF_UNIQUE_NOTES = "PREF_UNIQUE_NOTES";
 	private static final String PREF_UNIQUE_LATITUDE = "PREF_UNIQUE_LATITUDE";
 	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
-
+	SharedPreferences sharedPrefs;
+	Tools myTool;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,48 +60,36 @@ public class RecoverLocation extends Activity {
 
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
-		
-		String tag_alarm="recover";
-		SharedPreferences sharedPrefs = getSharedPreferences(
-				PREF_UNIQUE_DATE, Context.MODE_PRIVATE);
+
+		String tag_alarm = "recover";
+		sharedPrefs = getSharedPreferences(PREF_UNIQUE_DATE,
+				Context.MODE_PRIVATE);
 		String val = sharedPrefs.getString(PREF_UNIQUE_DATE, null);
-	    sharedPrefs = getSharedPreferences(
-			 PREF_UNIQUE_NOTES, Context.MODE_PRIVATE);
+		
+		sharedPrefs = getSharedPreferences(PREF_UNIQUE_NOTES,
+				Context.MODE_PRIVATE);
 		String val2 = sharedPrefs.getString(PREF_UNIQUE_NOTES, null);
-		 sharedPrefs = getSharedPreferences(
-				 PREF_UNIQUE_LATITUDE, Context.MODE_PRIVATE);
-		 String val3 = sharedPrefs.getString(PREF_UNIQUE_LATITUDE, null);
-		 sharedPrefs = getSharedPreferences(
-				 PREF_UNIQUE_LONGITUDE, Context.MODE_PRIVATE);
-		 String val4 = sharedPrefs.getString(PREF_UNIQUE_LONGITUDE, null);
-		 
-		 Log.i(tag_alarm, val);
-		 Log.i(tag_alarm, val2);
-		 Log.i(tag_alarm, val3);
-		 Log.i(tag_alarm, val4);
+		
+		sharedPrefs = getSharedPreferences(PREF_UNIQUE_LATITUDE,
+				Context.MODE_PRIVATE);
+		String val3 = sharedPrefs.getString(PREF_UNIQUE_LATITUDE, null);
+		
+		sharedPrefs = getSharedPreferences(PREF_UNIQUE_LONGITUDE,
+				Context.MODE_PRIVATE);
+		String val4 = sharedPrefs.getString(PREF_UNIQUE_LONGITUDE, null);
+		
+		if (val != null) {
+			Log.i(tag_alarm, val);
+		} else if (val2 != null) {
+			Log.i(tag_alarm, val2);
+		} else if (val3 != null) {
+			Log.i(tag_alarm, val3);
+		} else if (val4 != null) {
+			Log.i(tag_alarm, val4);
+		}
 
-		Button Alarm = (Button) findViewById(R.id.alarmbut);
-		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
-				"fonts/Roboto-Light.ttf");
-		Alarm.setTypeface(robotoLight);
-
-		Alarm.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				cal = new GregorianCalendar();
-				cal.setTimeInMillis(System.currentTimeMillis());
-				day = cal.get(Calendar.DAY_OF_WEEK);
-				hour = cal.get(Calendar.HOUR_OF_DAY) + 1;
-				minute = cal.get(Calendar.MINUTE);
-
-				Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-				i.putExtra(AlarmClock.EXTRA_MESSAGE, "Locartor");
-				i.putExtra(AlarmClock.EXTRA_HOUR, hour);
-				i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
-				startActivity(i);
-				// finish();
-			}
-		});
-
+		
+		
 		imgFavorite = (ImageView) findViewById(R.id.imageView1);
 		imgFavorite.setOnClickListener(new OnClickListener() {
 			@Override
@@ -119,23 +110,11 @@ public class RecoverLocation extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Bitmap bp = (Bitmap) data.getExtras().get("data");
-		imgFavorite.setImageBitmap(bp);
-
-		File outFile = new File(Environment.getExternalStorageDirectory(),
-				"locartor.png");
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(outFile);
-			bp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			fos.flush();
-			fos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (resultCode == RESULT_OK) {
+			myTool = new Tools();
+			Display display = getWindowManager().getDefaultDisplay();
+			myTool.setBitmap(data,imgFavorite,display);
+			
 		}
 
 	}
