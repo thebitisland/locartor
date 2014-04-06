@@ -20,20 +20,20 @@
     <Button
         android:id="@+id/saveButton"
         style="@style/CustomStyleButton"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginBottom="5dp"
-        android:text="Save" />
+        android:text="@string/save_button" />
     <Button
         android:id="@+id/recoverButton"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         style="@style/CustomStyleButton"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="55dp"
-        android:text="Recover" />
+        android:text="@string/recover_button" />
 
 </FrameLayout>
 

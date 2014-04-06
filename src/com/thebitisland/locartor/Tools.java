@@ -1,6 +1,5 @@
 package com.thebitisland.locartor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -27,13 +26,13 @@ public class Tools  {
 	private static GoogleMap map;
 	
 	public Tools ( double latitude, double longitude, Marker mMarker,GoogleMap map){
-		this.latitude=latitude;
-		this.longitude=longitude;
-		this.mMarker=mMarker;
-		this.map=map;
+		Tools.latitude=latitude;
+		Tools.longitude=longitude;
+		Tools.mMarker=mMarker;
+		Tools.map=map;
 	}
 	
-	public static void startLocation(Context ctx) {
+	public void startLocation(Context ctx) {
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) ctx
 				.getSystemService(Context.LOCATION_SERVICE);
