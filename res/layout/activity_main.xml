@@ -12,7 +12,8 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:layout_width="35dp"
+        android:layout_width="55dp"
+        android:layout_marginTop="-60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/marker" />
@@ -32,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="55dp"
         android:text="@string/recover_button" />
 
 </FrameLayout>

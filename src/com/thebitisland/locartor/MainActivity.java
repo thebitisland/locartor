@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
 
 		map.setMyLocationEnabled(true);
 
+		map.setPadding(0, 0, 0, 100);
+		
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
 				.title("Marker"));
 		mytool = new Tools(latitude, latitude, mMarker, map);
