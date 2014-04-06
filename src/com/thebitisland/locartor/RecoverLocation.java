@@ -1,31 +1,29 @@
 package com.thebitisland.locartor;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Marker;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class RecoverLocation extends Activity {
 
@@ -45,11 +43,12 @@ public class RecoverLocation extends Activity {
 	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
 	SharedPreferences sharedPrefs;
 	Tools myTool;
+	Bitmap myBitmap;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_save_location);
+		setContentView(R.layout.activity_recover_location);
 		context = getApplicationContext();
 
 		// Get a handle to the Map Fragment
@@ -79,44 +78,79 @@ public class RecoverLocation extends Activity {
 		String val4 = sharedPrefs.getString(PREF_UNIQUE_LONGITUDE, null);
 		
 		if (val != null) {
-			Log.i(tag_alarm, val);
+			Log.e(tag_alarm, val);
 		} else if (val2 != null) {
-			Log.i(tag_alarm, val2);
+			Log.e(tag_alarm, val2);
 		} else if (val3 != null) {
-			Log.i(tag_alarm, val3);
+			Log.e(tag_alarm, val3);
 		} else if (val4 != null) {
-			Log.i(tag_alarm, val4);
+			Log.e(tag_alarm, val4);
 		}
 
+		open();
 		
 		
 		imgFavorite = (ImageView) findViewById(R.id.imageView1);
 		imgFavorite.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				open();
+				CrearAlert(context);
 			}
 		});
+
+		
 
 	}
 
 	public void open() {
-		Intent intent = new Intent(
-				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(intent, 0);
-	}
+		File outFile = new File(Environment.getExternalStorageDirectory(),
+				"locartor.png");
+		if(outFile.exists()){
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK) {
-			myTool = new Tools();
-			Display display = getWindowManager().getDefaultDisplay();
-			myTool.setBitmap(data,imgFavorite,display);
-			
+		    myBitmap = BitmapFactory.decodeFile(outFile.getAbsolutePath());
+		    ImageView imgFavorite = (ImageView) findViewById(R.id.imageView1);
+		    imgFavorite.setImageBitmap(myBitmap);
+		    
+
 		}
-
 	}
+
+	
+	 public void CrearAlert(Context ctx){
+		 
+		 final Dialog dialog = new Dialog(RecoverLocation.this);
+			dialog.setContentView(R.layout.custom);
+			dialog.setTitle("");
+		    //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			// set the custom dialog components - text, image and button
+			ImageView image = (ImageView) dialog.findViewById(R.id.image);
+			image.setImageBitmap(myBitmap);
+			int hei=image.getHeight();
+			int lon=image.getWidth();
+			
+			if(hei>lon){
+				Log.e("pepe", "entro aqui");
+				Display display = getWindowManager().getDefaultDisplay();
+				int width = display.getWidth();
+				int heigth = display.getHeight();
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+						1800, heigth);
+				image.setLayoutParams(layoutParams);
+				
+			}
+
+			Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+			// if button is clicked, close the custom dialog
+			dialogButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+
+			dialog.show();
+	    }
+
+
 
 }

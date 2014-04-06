@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -16,7 +17,6 @@ import android.os.Environment;
 import android.view.Display;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -134,7 +134,7 @@ public class Tools  {
 		Bitmap bp = (Bitmap) data.getExtras().get("data");
 		imgFavorite.setImageBitmap(bp);
 		int width = display.getWidth();
-		int heigth = display.getHeight();;
+		int heigth = display.getHeight();
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				width, heigth);
 		imgFavorite.setLayoutParams(layoutParams);
@@ -159,5 +159,6 @@ public class Tools  {
 		
 		
 	}
-
+	
+	
 }
