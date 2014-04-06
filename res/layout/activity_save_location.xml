@@ -47,7 +47,7 @@
             android:text="A L A R M" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:ems="10"

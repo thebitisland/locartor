@@ -1,10 +1,21 @@
 package com.thebitisland.locartor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Display;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,6 +41,10 @@ public class Tools  {
 		Tools.longitude=longitude;
 		Tools.mMarker=mMarker;
 		Tools.map=map;
+	}
+	
+	public Tools(){
+		
 	}
 	
 	public void startLocation(Context ctx) {
@@ -102,6 +117,47 @@ public class Tools  {
 
 		map.animateCamera(CameraUpdateFactory.newLatLng(position));
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
+	}
+	
+	
+	public double getLatitude(){
+		return latitude;
+		
+	}
+	public double getLongitude(){
+		return longitude;
+		
+	}
+	
+	
+	public void setBitmap(Intent data,ImageView imgFavorite,Display display){
+		Bitmap bp = (Bitmap) data.getExtras().get("data");
+		imgFavorite.setImageBitmap(bp);
+		int width = display.getWidth();
+		int heigth = display.getHeight();;
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				width, heigth);
+		imgFavorite.setLayoutParams(layoutParams);
+
+		// Let's get the root layout and add our ImageView
+
+		File outFile = new File(Environment.getExternalStorageDirectory(),
+				"locartor.png");
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(outFile);
+			bp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }
