@@ -50,12 +50,12 @@ public class SaveLocationActivity extends Activity {
 				.getMap();
 
 		map.setMyLocationEnabled(true);
-
+		
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
 
-		Button Alarm = (Button) findViewById(R.id.alarmbut);
-		Button saveButton = (Button) findViewById(R.id.button2);
+		Button Alarm = (Button) findViewById(R.id.alarmButton);
+		Button saveButton = (Button) findViewById(R.id.saveButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
 		saveButton.setTypeface(robotoLight);

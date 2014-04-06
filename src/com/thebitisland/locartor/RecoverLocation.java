@@ -52,7 +52,7 @@ public class RecoverLocation extends Activity {
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
 
-		Button Alarm = (Button) findViewById(R.id.alarmbut);
+		Button Alarm = (Button) findViewById(R.id.alarmButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
