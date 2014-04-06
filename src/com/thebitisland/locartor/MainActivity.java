@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
 		
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
 				.title("Marker"));
+		
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
 

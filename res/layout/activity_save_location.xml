@@ -12,10 +12,10 @@
 
         <ImageView
             android:id="@+id/takenImage"
-            android:background="@drawable/background"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/background"
             android:contentDescription="@string/hello_world" />
     </LinearLayout>
 
@@ -25,6 +25,13 @@
         android:layout_width="fill_parent"
         android:layout_height="140dp"
         android:layout_alignParentTop="True" />
+
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/marker" />
 
     <ImageView
         android:id="@+id/cameraIcon"

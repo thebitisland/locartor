@@ -30,7 +30,7 @@ public class SaveLocationActivity extends Activity {
 
 	Calendar cal;
 	int minute, hour, day;
-	ImageView imgFavorite;
+	ImageView takenImage;
 
 	public double latitude;
 	public double longitude;
@@ -50,6 +50,8 @@ public class SaveLocationActivity extends Activity {
 				.getMap();
 
 		map.setMyLocationEnabled(true);
+		
+		map.getUiSettings().setZoomControlsEnabled(false);
 		
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
@@ -77,8 +79,8 @@ public class SaveLocationActivity extends Activity {
 			}
 		});
 
-		imgFavorite = (ImageView) findViewById(R.id.takenImage);
-		imgFavorite.setOnClickListener(new OnClickListener() {
+		takenImage = (ImageView) findViewById(R.id.takenImage);
+		takenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				open();
@@ -100,7 +102,7 @@ public class SaveLocationActivity extends Activity {
 		
 		if (resultCode == RESULT_OK) {
 			Bitmap bp = (Bitmap) data.getExtras().get("data");
-			imgFavorite.setImageBitmap(bp);
+			takenImage.setImageBitmap(bp);
 			// imgFavorite.setScaleType(ImageView.ScaleType.MATRIX);
 			// imgFavorite.getLayoutParams().height = 500;
 			Display display = getWindowManager().getDefaultDisplay();
@@ -111,7 +113,7 @@ public class SaveLocationActivity extends Activity {
 			// 80, r.getDisplayMetrics());
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 					width, heigth);
-			imgFavorite.setLayoutParams(layoutParams);
+			takenImage.setLayoutParams(layoutParams);
 
 			// Let's get the root layout and add our ImageView
 
