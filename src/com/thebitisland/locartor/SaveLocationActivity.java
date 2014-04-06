@@ -14,14 +14,11 @@ import com.google.android.gms.maps.model.Marker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.AlarmClock;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,8 +32,6 @@ public class SaveLocationActivity extends Activity {
 	int minute, hour, day;
 	ImageView imgFavorite;
 
-	private LocationManager locationManager;
-
 	public double latitude;
 	public double longitude;
 	private Marker mMarker;
@@ -47,7 +42,7 @@ public class SaveLocationActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.secondview);
+		setContentView(R.layout.activity_save_location);
 		context = getApplicationContext();
 
 		// Get a handle to the Map Fragment

@@ -64,7 +64,7 @@
             android:layout_height="60dp"
             android:gravity="center_horizontal"
             android:layout_gravity="bottom"
-            android:text="S A V E" />
+            android:text="SAVE" />
   </LinearLayout>
 
 </LinearLayout>

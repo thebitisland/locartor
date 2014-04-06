@@ -7,8 +7,9 @@
     <string name="alarm_hello">The alarm will start in five seconds.</string>
     <string name="stop_alarm">Stop Alarm</string>
     <string name="title_activity_settings">Save Location</string>
-      <string name="title_activity_settings2">Camera</string>
+    <string name="title_activity_settings2">Camera</string>
     <string name="tap">Tap the image to open the camera!!</string>
-
+    <string name="save_button">Save</string>
+    <string name="recover_button">Recover</string>
 
 </resources>
