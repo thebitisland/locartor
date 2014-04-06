@@ -10,6 +10,6 @@
     <string name="title_activity_settings2">Cámara</string>
     <string name="tap">Toca la imagen para utilizar la cámara</string>
     <string name="save_button">Guardar</string>
-    <string name="recover_button">Recuperar</string>
+    <string nme="recover_button">Recuperar</string>
 
 </resources>
