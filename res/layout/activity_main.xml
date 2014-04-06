@@ -19,6 +19,7 @@
 
     <Button
         android:id="@+id/saveButton"
+        style="@style/CustomStyleButton"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

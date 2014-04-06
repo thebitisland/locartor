@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,6 +49,8 @@ public class MainActivity extends Activity {
 		mytool.startLocation(context);
 
 		Button saveButton = (Button) findViewById(R.id.saveButton);
+		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+		saveButton.setTypeface(robotoLight);
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 

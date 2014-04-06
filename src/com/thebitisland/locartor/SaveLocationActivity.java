@@ -56,8 +56,10 @@ public class SaveLocationActivity extends Activity {
 				mytool.startLocation(context);
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
+		Button saveButton = (Button) findViewById(R.id.button2);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
+		saveButton.setTypeface(robotoLight);
 		
 		Alarm.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
