@@ -91,7 +91,7 @@ public class SaveLocationActivity extends Activity {
 				editor.putString(PREF_UNIQUE_NOTES, notes);
 				editor.putString(PREF_UNIQUE_LATITUDE,String.valueOf(latitude));
 				editor.putString(PREF_UNIQUE_LONGITUDE, String.valueOf(longitude));
-				editor.commit();
+				editor.commit();				
 				finish();
 			}
 		});

@@ -58,6 +58,16 @@ public class MainActivity extends Activity {
 				// finish();
 			}
 		});
+		
+		recoverButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				Intent i = new Intent(getBaseContext(),
+						RecoverLocation.class);
+				startActivity(i);
+				// finish();
+			}
+		});
 
 	}
 

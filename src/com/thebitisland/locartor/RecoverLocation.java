@@ -14,11 +14,13 @@ import com.google.android.gms.maps.model.Marker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.AlarmClock;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,6 +38,10 @@ public class RecoverLocation extends Activity {
 	private GoogleMap map;
 	Tools mytool;
 	private static Context context;
+	private static final String PREF_UNIQUE_DATE = "PREF_UNIQUE_DATE";
+	private static final String PREF_UNIQUE_NOTES = "PREF_UNIQUE_NOTES";
+	private static final String PREF_UNIQUE_LATITUDE = "PREF_UNIQUE_LATITUDE";
+	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,25 @@ public class RecoverLocation extends Activity {
 
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
+		
+		String tag_alarm="recover";
+		SharedPreferences sharedPrefs = getSharedPreferences(
+				PREF_UNIQUE_DATE, Context.MODE_PRIVATE);
+		String val = sharedPrefs.getString(PREF_UNIQUE_DATE, null);
+	    sharedPrefs = getSharedPreferences(
+			 PREF_UNIQUE_NOTES, Context.MODE_PRIVATE);
+		String val2 = sharedPrefs.getString(PREF_UNIQUE_NOTES, null);
+		 sharedPrefs = getSharedPreferences(
+				 PREF_UNIQUE_LATITUDE, Context.MODE_PRIVATE);
+		 String val3 = sharedPrefs.getString(PREF_UNIQUE_LATITUDE, null);
+		 sharedPrefs = getSharedPreferences(
+				 PREF_UNIQUE_LONGITUDE, Context.MODE_PRIVATE);
+		 String val4 = sharedPrefs.getString(PREF_UNIQUE_LONGITUDE, null);
+		 
+		 Log.i(tag_alarm, val);
+		 Log.i(tag_alarm, val2);
+		 Log.i(tag_alarm, val3);
+		 Log.i(tag_alarm, val4);
 
 		Button Alarm = (Button) findViewById(R.id.alarmbut);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
