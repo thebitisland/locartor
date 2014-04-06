@@ -51,6 +51,10 @@ public class MainActivity extends Activity {
 		Button saveButton = (Button) findViewById(R.id.saveButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
 		saveButton.setTypeface(robotoLight);
+		
+		Button recoverButton = (Button) findViewById(R.id.recoverButton);
+		recoverButton.setTypeface(robotoLight);
+		
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
