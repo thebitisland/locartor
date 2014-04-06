@@ -74,7 +74,7 @@ public class RecoverLocation extends Activity {
 			}
 		});
 
-		imgFavorite = (ImageView) findViewById(R.id.imageView1);
+		imgFavorite = (ImageView) findViewById(R.id.takenImage);
 		imgFavorite.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
