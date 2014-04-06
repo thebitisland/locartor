@@ -14,16 +14,20 @@ import com.google.android.gms.maps.model.Marker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.AlarmClock;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class SaveLocationActivity extends Activity {
 
@@ -98,6 +102,19 @@ public class SaveLocationActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Bitmap bp = (Bitmap) data.getExtras().get("data");
 		imgFavorite.setImageBitmap(bp);
+		//imgFavorite.setScaleType(ImageView.ScaleType.MATRIX);
+		//imgFavorite.getLayoutParams().height = 500;
+		Display display = getWindowManager().getDefaultDisplay();
+		int width = display.getWidth();
+		int heigth = display.getHeight();
+		//Resources r = getResources();
+		//float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, r.getDisplayMetrics());
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, heigth);
+		imgFavorite.setLayoutParams(layoutParams);
+
+	    // Let's get the root layout and add our ImageView
+	    
+	 
 		
 		File outFile = new File(Environment.getExternalStorageDirectory(), "locartor.png");
 		FileOutputStream fos;
