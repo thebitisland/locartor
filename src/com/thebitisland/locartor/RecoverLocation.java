@@ -52,7 +52,7 @@ public class RecoverLocation extends Activity {
 		mytool = new Tools(latitude, latitude, mMarker, map);
 		mytool.startLocation(context);
 
-		Button Alarm = (Button) findViewById(R.id.alarmbut);
+		Button Alarm = (Button) findViewById(R.id.alarmButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
@@ -74,7 +74,7 @@ public class RecoverLocation extends Activity {
 			}
 		});
 
-		imgFavorite = (ImageView) findViewById(R.id.imageView1);
+		imgFavorite = (ImageView) findViewById(R.id.takenImage);
 		imgFavorite.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
