@@ -2,9 +2,7 @@ package com.thebitisland.locartor;
 
 import java.io.File;
 import java.util.Calendar;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.Marker;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,6 +19,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+
 public class RecoverLocation extends Activity {
 
 	Calendar cal;
@@ -29,7 +30,6 @@ public class RecoverLocation extends Activity {
 
 	public float latitude;
 	public float longitude;
-	private Marker mMarker;
 	private GoogleMap map;
 	Tools mytool;
 	private static Context context;
@@ -53,7 +53,7 @@ public class RecoverLocation extends Activity {
 
 		map.setMyLocationEnabled(true);
 
-		mytool = new Tools(latitude, latitude, mMarker, map);
+		mytool = new Tools(map);
 		mytool.startLocation(context);
 
 		String tag_alarm = "recover";

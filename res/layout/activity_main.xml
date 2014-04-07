@@ -12,6 +12,7 @@
         android:layout_height="match_parent" />
 
     <ImageView
+        android:contentDescription="@string/custom_marker"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -16,7 +16,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/background"
-            android:contentDescription="@string/hello_world" />
+            android:contentDescription="@string/taken_image" />
     </LinearLayout>
 
     <fragment
@@ -27,6 +27,7 @@
         android:layout_alignParentTop="True" />
 
     <ImageView
+        android:contentDescription="@string/custom_marker"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/addNotes"
         android:layout_alignParentRight="true"
-        android:text="ALARM"
+        android:text="@string/alarm"
         android:textSize="12sp" />
 
     <EditText
@@ -59,7 +60,7 @@
         android:layout_above="@+id/saveLocationButton"
         android:background="#fff"
         android:ems="10"
-        android:hint="Add some notes" >
+        android:hint="@string/notes" >
     </EditText>
 
     <Button
@@ -69,6 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="True"
         android:gravity="center_horizontal"
-        android:text="SAVE" />
+        android:text="@string/save_button" />
 
 </RelativeLayout>
