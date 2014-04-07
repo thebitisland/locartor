@@ -12,34 +12,52 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:contentDescription="@string/custom_marker"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="-40dp"
+        android:contentDescription="@string/custom_marker"
         android:src="@drawable/marker" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/recoverButton"
-            style="@style/CustomStyleButton"
+        <TextView
+            android:id="@+id/streetName"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/mini_marker"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/recover_button" />
+            android:layout_gravity="bottom"
+            android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/saveButton"
-            style="@style/CustomStyleButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/save_button" />
+            <Button
+                android:id="@+id/recoverButton"
+                style="@style/CustomStyleButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recover_button" />
+
+            <Button
+                android:id="@+id/saveButton"
+                style="@style/CustomStyleButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/save_button" />
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

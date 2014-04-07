@@ -1,11 +1,14 @@
 package com.thebitisland.locartor;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -52,12 +56,27 @@ public class MainActivity extends Activity {
 
 		// Map UI options (myLocation and Zoom padding)
 		map.setMyLocationEnabled(true);
-		map.setPadding(0, 0, 0, 100);
+		map.setPadding(0, 0, 0, 120);
 
 		// Start Location and manualLocation process
 		mytool = new Tools(map);
 		mytool.startLocation(context);
 		mytool.startManualLocation();
+
+		TextView streetName = (TextView) findViewById(R.id.streetName);
+
+		Drawable mini_marker = context.getResources().getDrawable(
+				R.drawable.mini_marker);
+		mini_marker.setBounds(0, 0, (int) (mini_marker.getIntrinsicWidth() * 0.12),
+				(int)(mini_marker.getIntrinsicHeight() * 0.12));
+		streetName.setCompoundDrawables(mini_marker, null, null, null);
+
+		try {
+			mytool.getStreetName(context, streetName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Save and Recover buttons
 		Button saveButton = (Button) findViewById(R.id.saveButton);

@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +19,7 @@ import android.os.Environment;
 import android.view.Display;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,9 +40,6 @@ public class Tools {
 	private static GoogleMap map;
 
 	public Tools(GoogleMap map) {
-		// Tools.latitude = latitude;
-		// Tools.longitude = longitude;
-		// Tools.mMarker = mMarker;
 		Tools.map = map;
 	}
 
@@ -109,6 +110,34 @@ public class Tools {
 				 * Toast toast = Toast.makeText(context, text, duration);
 				 * toast.show();
 				 */
+
+			}
+		});
+	}
+
+	public void getStreetName(final Context ctx, final TextView txtView)
+			throws IOException {
+
+		map.setOnCameraChangeListener(new OnCameraChangeListener() {
+			public void onCameraChange(CameraPosition arg0) {
+
+				// Set current latitude&longitude at center of the camera
+				latitude = (float) arg0.target.latitude;
+				longitude = (float) arg0.target.longitude;
+
+				Geocoder geoCoder = new Geocoder(ctx);
+				List<Address> matches;
+				try {
+					matches = geoCoder.getFromLocation(latitude, longitude, 1);
+					Address bestMatch = (matches.isEmpty() ? null : matches
+							.get(0));
+					txtView.setText(bestMatch.getAddressLine(0) + ", "
+							+ bestMatch.getLocality() + ", "
+							+ bestMatch.getSubAdminArea());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 		});
