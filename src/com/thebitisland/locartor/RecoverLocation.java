@@ -6,10 +6,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Marker;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,11 +17,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class RecoverLocation extends Activity {
 
@@ -126,7 +122,7 @@ public class RecoverLocation extends Activity {
 		if (hei > lon) {
 			Log.e("pepe", "entro aqui");
 			Display display = getWindowManager().getDefaultDisplay();
-			int width = display.getWidth();
+			//int width = display.getWidth();
 			int heigth = display.getHeight();
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 					1800, heigth);

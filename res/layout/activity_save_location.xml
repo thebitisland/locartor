@@ -56,14 +56,14 @@
         android:id="@+id/addNotes"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_above="@+id/saveButton"
+        android:layout_above="@+id/saveLocationButton"
         android:background="#fff"
         android:ems="10"
         android:hint="Add some notes" >
     </EditText>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/saveLocationButton"
         style="@style/CustomStyleButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

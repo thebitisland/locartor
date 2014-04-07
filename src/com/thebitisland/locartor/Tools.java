@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -56,11 +54,12 @@ public class Tools  {
 		LocationListener locationListener = new LocationListener() {
 			public void onLocationChanged(Location location) {
 
-				/* Retrieve current position */
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
+				LatLng position = new LatLng(location.getLatitude(),
+						location.getLongitude());
 
-				addLocation(location);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(position,17.0f));
+
+				//addLocation(location);
 			}
 
 			@Override
@@ -112,11 +111,9 @@ public class Tools  {
 
 	public static void addLocation(Location location) {
 
-		LatLng position = new LatLng(location.getLatitude(),
-				location.getLongitude());
-
-		map.animateCamera(CameraUpdateFactory.newLatLng(position));
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
+		
+		//map.animateCamera(CameraUpdateFactory.newLatLng(position));
+		//map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
 	}
 	
 	
@@ -130,14 +127,14 @@ public class Tools  {
 	}
 	
 	
-	public void setBitmap(Intent data,ImageView imgFavorite,Display display){
+	public void setBitmap(Intent data,ImageView takenImage,Display display){
 		Bitmap bp = (Bitmap) data.getExtras().get("data");
-		imgFavorite.setImageBitmap(bp);
+		takenImage.setImageBitmap(bp);
 		int width = display.getWidth();
 		int heigth = display.getHeight();
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				width, heigth);
-		imgFavorite.setLayoutParams(layoutParams);
+		takenImage.setLayoutParams(layoutParams);
 
 		// Let's get the root layout and add our ImageView
 

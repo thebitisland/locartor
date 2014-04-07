@@ -13,27 +13,32 @@
 
     <ImageView
         android:layout_width="55dp"
-        android:layout_marginTop="-60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="-60dp"
         android:src="@drawable/marker" />
 
-    <Button
-        android:id="@+id/saveButton"
-        style="@style/CustomStyleButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="5dp"
-        android:text="@string/save_button" />
-    <Button
-        android:id="@+id/recoverButton"
-        android:layout_width="wrap_content"
-        style="@style/CustomStyleButton"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="5dp"
-        android:text="@string/recover_button" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/recoverButton"
+            style="@style/CustomStyleButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/recover_button" />
+
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/CustomStyleButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save_button" />
+    </LinearLayout>
 
 </FrameLayout>
-

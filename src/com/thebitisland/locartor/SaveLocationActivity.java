@@ -1,9 +1,5 @@
 package com.thebitisland.locartor;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -14,12 +10,8 @@ import com.google.android.gms.maps.model.Marker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.provider.Settings;
@@ -32,7 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.widget.LinearLayout;
 
 public class SaveLocationActivity extends Activity {
 
@@ -73,14 +64,14 @@ public class SaveLocationActivity extends Activity {
 		myTool.startLocation(context);
 
 		Button Alarm = (Button) findViewById(R.id.alarmButton);
-		Button saveButton = (Button) findViewById(R.id.saveButton);
+		Button saveLocationButton = (Button) findViewById(R.id.saveLocationButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Light.ttf");
 		Alarm.setTypeface(robotoLight);
-		saveButton.setTypeface(robotoLight);
+		saveLocationButton.setTypeface(robotoLight);
 		final EditText mEdit = (EditText) findViewById(R.id.addNotes);
 
-		saveButton.setOnClickListener(new OnClickListener() {
+		saveLocationButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
 				String tag_alarm = "Locartor";
