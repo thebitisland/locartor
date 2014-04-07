@@ -24,27 +24,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Tools  {
-	
-	
+public class Tools {
+
 	private static LocationManager locationManager;
 
-	public static double latitude;
-	public static double longitude;
+	public static float latitude;
+	public static float longitude;
 	private static Marker mMarker;
 	private static GoogleMap map;
-	
-	public Tools ( double latitude, double longitude, Marker mMarker,GoogleMap map){
-		Tools.latitude=latitude;
-		Tools.longitude=longitude;
-		Tools.mMarker=mMarker;
-		Tools.map=map;
+
+	public Tools(float latitude, float longitude, Marker mMarker,
+			GoogleMap map) {
+		Tools.latitude = latitude;
+		Tools.longitude = longitude;
+		Tools.mMarker = mMarker;
+		Tools.map = map;
 	}
-	
-	public Tools(){
-		
+
+	public Tools() {
+
 	}
-	
+
 	public void startLocation(Context ctx) {
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) ctx
@@ -57,28 +57,21 @@ public class Tools  {
 				LatLng position = new LatLng(location.getLatitude(),
 						location.getLongitude());
 
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(position,17.0f));
-
-				//addLocation(location);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(position,
+						17.0f));
 			}
 
 			@Override
 			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
-				// TODO Auto-generated method stub
-
 			}
 
 		};
@@ -88,6 +81,9 @@ public class Tools  {
 		locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,
 				locationListener, null);
 
+	}
+
+	public void startManualLocation() {
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			public void onCameraChange(CameraPosition arg0) {
 				map.clear();
@@ -95,39 +91,32 @@ public class Tools  {
 						arg0.target).icon(
 						BitmapDescriptorFactory.fromResource(R.drawable.empty)));
 
+				latitude = (float) arg0.target.latitude;
+				longitude = (float) arg0.target.longitude;
+				
 				/*
 				 * Testing cameraListener Context context =
 				 * getApplicationContext(); CharSequence text =
 				 * arg0.target.toString(); int duration = Toast.LENGTH_SHORT;
-				 * 
 				 * Toast toast = Toast.makeText(context, text, duration);
 				 * toast.show();
 				 */
 
 			}
 		});
-
 	}
 
-	public static void addLocation(Location location) {
-
-		
-		//map.animateCamera(CameraUpdateFactory.newLatLng(position));
-		//map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
-	}
-	
-	
-	public double getLatitude(){
+	public float getLatitude() {
 		return latitude;
-		
+
 	}
-	public double getLongitude(){
+
+	public float getLongitude() {
 		return longitude;
-		
+
 	}
-	
-	
-	public void setBitmap(Intent data,ImageView takenImage,Display display){
+
+	public void setBitmap(Intent data, ImageView takenImage, Display display) {
 		Bitmap bp = (Bitmap) data.getExtras().get("data");
 		takenImage.setImageBitmap(bp);
 		int width = display.getWidth();
@@ -153,9 +142,7 @@ public class Tools  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
-	
+
 }

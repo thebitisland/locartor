@@ -3,8 +3,10 @@ package com.thebitisland.locartor;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import android.app.Activity;
@@ -37,8 +39,8 @@ public class SaveLocationActivity extends Activity {
 
 	ImageView takenImage;
 
-	public double latitude;
-	public double longitude;
+	public float latitude;
+	public float longitude;
 	private Marker mMarker;
 	private GoogleMap map;
 	SharedPreferences preferences;
@@ -60,8 +62,15 @@ public class SaveLocationActivity extends Activity {
 
 		map.getUiSettings().setZoomControlsEnabled(false);
 
+		float manualLatitude = preferences.getFloat(PREF_UNIQUE_LATITUDE, 0);
+		float manualLongitude = preferences.getFloat(PREF_UNIQUE_LONGITUDE, 0);
+		Log.i("caja", manualLatitude+"");
+		Log.i("caja", manualLongitude+"");
+		LatLng position = new LatLng(manualLatitude, manualLongitude);
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
+
 		myTool = new Tools(latitude, latitude, mMarker, map);
-		myTool.startLocation(context);
+		myTool.startManualLocation();
 
 		Button Alarm = (Button) findViewById(R.id.alarmButton);
 		Button saveLocationButton = (Button) findViewById(R.id.saveLocationButton);
@@ -88,9 +97,8 @@ public class SaveLocationActivity extends Activity {
 				Editor editor = preferences.edit();
 				editor.putString(PREF_UNIQUE_DATE, nextAlarm);
 				editor.putString(PREF_UNIQUE_NOTES, notes);
-				editor.putString(PREF_UNIQUE_LATITUDE, String.valueOf(latitude));
-				editor.putString(PREF_UNIQUE_LONGITUDE,
-						String.valueOf(longitude));
+				editor.putFloat(PREF_UNIQUE_LATITUDE, latitude);
+				editor.putFloat(PREF_UNIQUE_LONGITUDE,longitude);
 				editor.commit();
 				finish();
 			}

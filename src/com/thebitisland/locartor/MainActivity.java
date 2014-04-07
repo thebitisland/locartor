@@ -9,23 +9,30 @@ import com.google.android.gms.maps.*;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class MainActivity extends Activity {
 
-	public double latitude;
-	public double longitude;
+	public float latitude;
+	public float longitude;
 	private Marker mMarker;
 	private GoogleMap map;
 	Tools mytool;
 	private static Context context;
+	private static final String PREF_UNIQUE_LATITUDE = "PREF_UNIQUE_LATITUDE";
+	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
+	SharedPreferences preferences;
 
 	private ShareActionProvider mShareActionProvider;
 
@@ -35,6 +42,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		context = getApplicationContext();
+		preferences = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
@@ -47,8 +56,9 @@ public class MainActivity extends Activity {
 		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
 				.title("Marker"));
 
-		mytool = new Tools(latitude, latitude, mMarker, map);
+		mytool = new Tools(latitude, longitude, mMarker, map);
 		mytool.startLocation(context);
+		mytool.startManualLocation();
 
 		Button saveButton = (Button) findViewById(R.id.saveButton);
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
@@ -63,6 +73,15 @@ public class MainActivity extends Activity {
 
 				Intent i = new Intent(getBaseContext(),
 						SaveLocationActivity.class);
+				Editor editor = preferences.edit();
+				editor.putFloat(PREF_UNIQUE_LATITUDE,
+						(float) mytool.getLatitude());
+				Log.i("caja", mytool.getLatitude()+"");
+				editor.putFloat(PREF_UNIQUE_LONGITUDE,
+						(float) mytool.getLongitude());
+				Log.i("caja", mytool.getLongitude()+"");
+				editor.commit();
+
 				startActivity(i);
 				// finish();
 			}

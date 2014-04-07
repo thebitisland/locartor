@@ -27,8 +27,8 @@ public class RecoverLocation extends Activity {
 	int minute, hour, day;
 	ImageView takenImage;
 
-	public double latitude;
-	public double longitude;
+	public float latitude;
+	public float longitude;
 	private Marker mMarker;
 	private GoogleMap map;
 	Tools mytool;
