@@ -5,11 +5,15 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">It works!</string>
     <string name="alarm_hello">The alarm will start in five seconds.</string>
+    <string name="alarm">Alarm</string>
     <string name="stop_alarm">Stop Alarm</string>
     <string name="title_activity_settings">Save Location</string>
     <string name="title_activity_settings2">Camera</string>
     <string name="tap">Tap the image to open the camera!!</string>
     <string name="save_button">Save</string>
     <string name="recover_button">Recover</string>
+    <string name="custom_marker">Custom marker</string>
+    <string name="taken_image">Take a picture to help remember</string>
+    <string name="notes">Add some notes here</string>
 
 </resources>

@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.app.AlertDialog;
+import java.util.List;
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +19,8 @@ import android.os.Environment;
 import android.view.Display;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -26,27 +30,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Tools  {
-	
-	
-	private static LocationManager locationManager;
+public class Tools {
 
-	public static double latitude;
-	public static double longitude;
-	private static Marker mMarker;
+	// map variables
+	private static LocationManager locationManager;
+	public static float latitude;
+	public static float longitude;
+	Marker mMarker;
 	private static GoogleMap map;
-	
-	public Tools ( double latitude, double longitude, Marker mMarker,GoogleMap map){
-		Tools.latitude=latitude;
-		Tools.longitude=longitude;
-		Tools.mMarker=mMarker;
-		Tools.map=map;
+
+	public Tools(GoogleMap map) {
+		Tools.map = map;
 	}
-	
-	public Tools(){
-		
+
+	public Tools() {
 	}
-	
+
+	// Basic location process
 	public void startLocation(Context ctx) {
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) ctx
@@ -56,94 +56,118 @@ public class Tools  {
 		LocationListener locationListener = new LocationListener() {
 			public void onLocationChanged(Location location) {
 
-				/* Retrieve current position */
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
+				LatLng position = new LatLng(location.getLatitude(),
+						location.getLongitude());
 
-				addLocation(location);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(position,
+						17.0f));
 			}
 
 			@Override
 			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
-				// TODO Auto-generated method stub
-
 			}
 
 		};
 
+		// Just first location
 		locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
 				locationListener, null);
 		locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,
 				locationListener, null);
 
+	}
+
+	// Manual location process
+	public void startManualLocation() {
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			public void onCameraChange(CameraPosition arg0) {
 				map.clear();
+				/*
+				 * add marker at new location. hint: empty because of the delay,
+				 * the marker shown is a static image
+				 */
 				mMarker = map.addMarker(new MarkerOptions().position(
 						arg0.target).icon(
 						BitmapDescriptorFactory.fromResource(R.drawable.empty)));
+
+				// Set current latitude&longitude at center of the camera
+				latitude = (float) arg0.target.latitude;
+				longitude = (float) arg0.target.longitude;
 
 				/*
 				 * Testing cameraListener Context context =
 				 * getApplicationContext(); CharSequence text =
 				 * arg0.target.toString(); int duration = Toast.LENGTH_SHORT;
-				 * 
 				 * Toast toast = Toast.makeText(context, text, duration);
 				 * toast.show();
 				 */
 
 			}
 		});
-
 	}
 
-	public static void addLocation(Location location) {
+	public void getStreetName(final Context ctx, final TextView txtView)
+			throws IOException {
 
-		LatLng position = new LatLng(location.getLatitude(),
-				location.getLongitude());
+		map.setOnCameraChangeListener(new OnCameraChangeListener() {
+			public void onCameraChange(CameraPosition arg0) {
 
-		map.animateCamera(CameraUpdateFactory.newLatLng(position));
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
+				// Set current latitude&longitude at center of the camera
+				latitude = (float) arg0.target.latitude;
+				longitude = (float) arg0.target.longitude;
+
+				Geocoder geoCoder = new Geocoder(ctx);
+				List<Address> matches;
+				try {
+					matches = geoCoder.getFromLocation(latitude, longitude, 1);
+					Address bestMatch = (matches.isEmpty() ? null : matches
+							.get(0));
+					txtView.setText(bestMatch.getAddressLine(0) + ", "
+							+ bestMatch.getLocality() + ", "
+							+ bestMatch.getSubAdminArea());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
 	}
-	
-	
-	public double getLatitude(){
+
+	public float getLatitude() {
 		return latitude;
-		
 	}
-	public double getLongitude(){
+
+	public float getLongitude() {
 		return longitude;
-		
 	}
-	
-	
-	public void setBitmap(Intent data,ImageView imgFavorite,Display display){
+
+	// get picture and save it
+	public void setBitmap(Intent data, ImageView takenImage, Display display) {
+
 		Bitmap bp = (Bitmap) data.getExtras().get("data");
-		imgFavorite.setImageBitmap(bp);
+		takenImage.setImageBitmap(bp);
+
 		int width = display.getWidth();
 		int heigth = display.getHeight();
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				width, heigth);
-		imgFavorite.setLayoutParams(layoutParams);
+		takenImage.setLayoutParams(layoutParams);
 
-		// Let's get the root layout and add our ImageView
-
+		// output file
 		File outFile = new File(Environment.getExternalStorageDirectory(),
 				"locartor.png");
 		FileOutputStream fos;
+		// try to save it
 		try {
 			fos = new FileOutputStream(outFile);
 			bp.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -156,9 +180,7 @@ public class Tools  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
-	
+
 }

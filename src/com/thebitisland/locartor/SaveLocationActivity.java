@@ -1,25 +1,14 @@
 package com.thebitisland.locartor;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.Marker;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.provider.Settings;
@@ -30,9 +19,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.widget.LinearLayout;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class SaveLocationActivity extends Activity {
 
@@ -45,74 +36,96 @@ public class SaveLocationActivity extends Activity {
 	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
 
 	ImageView takenImage;
-
-	public double latitude;
-	public double longitude;
-	private Marker mMarker;
 	private GoogleMap map;
 	SharedPreferences preferences;
 	Tools myTool;
-	private static Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_save_location);
-		context = getApplicationContext();
+
 		preferences = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
+
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
+		// Map UI settings
 		map.setMyLocationEnabled(true);
-
 		map.getUiSettings().setZoomControlsEnabled(false);
 
-		myTool = new Tools(latitude, latitude, mMarker, map);
-		myTool.startLocation(context);
+		// get manually adjusted position
+		float manualLatitude = preferences.getFloat(PREF_UNIQUE_LATITUDE, 0);
+		float manualLongitude = preferences.getFloat(PREF_UNIQUE_LONGITUDE, 0);
 
-		Button Alarm = (Button) findViewById(R.id.alarmButton);
-		Button saveButton = (Button) findViewById(R.id.saveButton);
+		Log.i("SharedPreferences", "outLat" + manualLatitude);
+		Log.i("SharedPreferences", "outLon" + manualLongitude);
+
+		// Centre camera on position
+		LatLng position = new LatLng(manualLatitude, manualLongitude);
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 17.0f));
+
+		// star location logic
+		myTool = new Tools(map);
+		myTool.startManualLocation();
+
+		// Buttons and editText view declarations
+		final EditText mEdit = (EditText) findViewById(R.id.addNotes);
+		Button alarmButton = (Button) findViewById(R.id.alarmButton);
+		Button saveLocationButton = (Button) findViewById(R.id.saveLocationButton);
+
+		// custom typography
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Light.ttf");
-		Alarm.setTypeface(robotoLight);
-		saveButton.setTypeface(robotoLight);
-		final EditText mEdit = (EditText) findViewById(R.id.addNotes);
+		alarmButton.setTypeface(robotoLight);
+		saveLocationButton.setTypeface(robotoLight);
 
-		saveButton.setOnClickListener(new OnClickListener() {
+		/*
+		 * saveLocationButton's listener: - save LatLng - save alarm's date&time
+		 */
+		saveLocationButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
+				// Get Alarm's info
 				String tag_alarm = "Locartor";
 				String nextAlarm = Settings.System.getString(
 						getContentResolver(),
 						Settings.System.NEXT_ALARM_FORMATTED);
-				String notes = mEdit.getText().toString();
-				// String nextAlarm2 =
-				// android.provider.Settings.System.getString(getContentResolver(),
-				// android.provider.Settings.System.NEXT_ALARM_FORMATTED);
-				longitude = myTool.getLongitude();
-				latitude = myTool.getLatitude();
 				Log.i(tag_alarm, nextAlarm);
+				
+				// Get notes
+				String notes = mEdit.getText().toString();
+				
+				// Get LatLng
+				float longitude = myTool.getLongitude();
+				float latitude = myTool.getLatitude();
+
+				// Save necessary values
 				Editor editor = preferences.edit();
 				editor.putString(PREF_UNIQUE_DATE, nextAlarm);
 				editor.putString(PREF_UNIQUE_NOTES, notes);
-				editor.putString(PREF_UNIQUE_LATITUDE, String.valueOf(latitude));
-				editor.putString(PREF_UNIQUE_LONGITUDE,
-						String.valueOf(longitude));
+				editor.putFloat(PREF_UNIQUE_LATITUDE, latitude);
+				editor.putFloat(PREF_UNIQUE_LONGITUDE, longitude);
 				editor.commit();
+
 				finish();
 			}
 		});
 
-		Alarm.setOnClickListener(new OnClickListener() {
+		// alarmButton's listener: set alarm
+		alarmButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				
+				// Get current time and date
 				cal = new GregorianCalendar();
 				cal.setTimeInMillis(System.currentTimeMillis());
 				day = cal.get(Calendar.DAY_OF_WEEK);
 				hour = cal.get(Calendar.HOUR_OF_DAY) + 1;
 				minute = cal.get(Calendar.MINUTE);
 
+				// call alarm application
 				Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
 				i.putExtra(AlarmClock.EXTRA_MESSAGE, "Locartor");
 				i.putExtra(AlarmClock.EXTRA_HOUR, hour);
@@ -122,33 +135,31 @@ public class SaveLocationActivity extends Activity {
 			}
 		});
 
+		// Image listener: take image and display it
 		takenImage = (ImageView) findViewById(R.id.takenImage);
 		takenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				open();
+				// call camera application and wait for image
+				Intent intent = new Intent(
+						android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(intent, 0);
 			}
 		});
 
 	}
 
-	public void open() {
-		Intent intent = new Intent(
-				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(intent, 0);
-	}
-
-	@Override
+	// Custom code for displaying the image once is taken
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK) {
-			myTool = new Tools();
+			// myTool = new Tools();
 			Display display = getWindowManager().getDefaultDisplay();
+			// display image
 			myTool.setBitmap(data, takenImage, display);
 
 		}
 	}
+
 }

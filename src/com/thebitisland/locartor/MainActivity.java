@@ -1,33 +1,43 @@
 package com.thebitisland.locartor;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.*;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 
 public class MainActivity extends Activity {
 
-	public double latitude;
-	public double longitude;
-	private Marker mMarker;
+	// Location variables
+	public float latitude;
+	public float longitude;
 	private GoogleMap map;
+
+	// SharedPreferences variables
+	private static final String PREF_UNIQUE_LATITUDE = "PREF_UNIQUE_LATITUDE";
+	private static final String PREF_UNIQUE_LONGITUDE = "PREF_UNIQUE_LONGITUDE";
+	SharedPreferences preferences;
+
+	// General and auxiliary variables
 	Tools mytool;
 	private static Context context;
-	
 	private ShareActionProvider mShareActionProvider;
 
 	@Override
@@ -35,45 +45,73 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Get sharedPreferences handler
 		context = getApplicationContext();
+		preferences = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 
 		// Get a handle to the Map Fragment
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
+		// Map UI options (myLocation and Zoom padding)
 		map.setMyLocationEnabled(true);
+		map.setPadding(0, 0, 0, 120);
 
-		map.setPadding(0, 0, 0, 100);
-		
-		mMarker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0))
-				.title("Marker"));
-		
-		mytool = new Tools(latitude, latitude, mMarker, map);
+		// Start Location and manualLocation process
+		mytool = new Tools(map);
 		mytool.startLocation(context);
+		mytool.startManualLocation();
 
+		TextView streetName = (TextView) findViewById(R.id.streetName);
+
+		Drawable mini_marker = context.getResources().getDrawable(
+				R.drawable.mini_marker);
+		mini_marker.setBounds(0, 0, (int) (mini_marker.getIntrinsicWidth() * 0.12),
+				(int)(mini_marker.getIntrinsicHeight() * 0.12));
+		streetName.setCompoundDrawables(mini_marker, null, null, null);
+
+		try {
+			mytool.getStreetName(context, streetName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Save and Recover buttons
 		Button saveButton = (Button) findViewById(R.id.saveButton);
+		Button recoverButton = (Button) findViewById(R.id.recoverButton);
+		// Buttons' typography
 		Typeface robotoLight = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Light.ttf");
 		saveButton.setTypeface(robotoLight);
-
-		Button recoverButton = (Button) findViewById(R.id.recoverButton);
 		recoverButton.setTypeface(robotoLight);
 
+		// saveButton's listener: save location and start activity
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
+				Editor editor = preferences.edit();
+				editor.putFloat(PREF_UNIQUE_LATITUDE, mytool.getLatitude());
+				editor.putFloat(PREF_UNIQUE_LONGITUDE, mytool.getLongitude());
+				editor.commit();
+
+				Log.i("SharedPreferences", "inLat: " + mytool.getLatitude());
+				Log.i("SharedPreferences", "inLon: " + mytool.getLongitude());
+
 				Intent i = new Intent(getBaseContext(),
 						SaveLocationActivity.class);
+
 				startActivity(i);
 				// finish();
 			}
 		});
-		
+
+		// recoverButton's listener: start activity
 		recoverButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
-				Intent i = new Intent(getBaseContext(),
-						RecoverLocation.class);
+				Intent i = new Intent(getBaseContext(), RecoverLocation.class);
 				startActivity(i);
 				// finish();
 			}
@@ -83,34 +121,26 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate menu resource file.
-	    getMenuInflater().inflate(R.menu.main, menu);
+		// Inflate menu resource file.
+		getMenuInflater().inflate(R.menu.main, menu);
 
-	    // Locate MenuItem with ShareActionProvider
-	    MenuItem item = menu.findItem(R.id.menu_item_share);
+		// Locate MenuItem with ShareActionProvider
+		MenuItem item = menu.findItem(R.id.menu_item_share);
 
-	    // Fetch and store ShareActionProvider
-	    mShareActionProvider = (ShareActionProvider) item.getActionProvider();
-	    
-	    mShareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-	    
+		// Fetch and store ShareActionProvider
+		mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+		mShareActionProvider
+				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+
+		// Share message and location
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_TEXT, "Your car is here: ");
 		sendIntent.setType("text/plain");
-	    
-	    mShareActionProvider.setShareIntent(sendIntent);
-		
-	    // Return true to display menu
-	    return true;
+		mShareActionProvider.setShareIntent(sendIntent);
+
+		// Return true to display menu
+		return true;
 	}
 
-
-	// Call to update the share intent
-	private void setShareIntent(Intent shareIntent) {
-		
-	    if (mShareActionProvider != null) {
-	        mShareActionProvider.setShareIntent(shareIntent);
-	    }
-	}
 }
